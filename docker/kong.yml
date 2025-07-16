@@ -1,0 +1,143 @@
+services:
+  - name: auth
+    url: http://gotrue:9999
+    routes:
+      - name: auth-route
+        paths:
+          - /auth/v1
+    plugins:
+      - name: cors
+        config:
+          origins:
+            - '*' # Permite todas as origens. Para produção, restrinja a sua URL.
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+          headers:
+            - apikey
+            - authorization
+            - content-type
+            - x-client-info
+          exposed_headers:
+            - content-range
+          credentials: true
+          max_age: 86400
+
+  - name: rest
+    url: http://postgrest:3000
+    routes:
+      - name: rest-route
+        paths:
+          - /rest/v1
+    plugins:
+      - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+          headers:
+            - apikey
+            - authorization
+            - content-type
+            - x-client-info
+          exposed_headers:
+            - content-range
+          credentials: true
+          max_age: 86400
+
+  - name: realtime
+    url: http://realtime:4000
+    routes:
+      - name: realtime-route
+        paths:
+          - /realtime/v1
+    plugins:
+      - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - OPTIONS
+          headers:
+            - apikey
+            - authorization
+            - content-type
+            - x-client-info
+          exposed_headers:
+            - content-range
+          credentials: true
+          max_age: 86400
+
+  - name: storage
+    url: http://storage-api:5000
+    routes:
+      - name: storage-route
+        paths:
+          - /storage/v1
+    plugins:
+      - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+          headers:
+            - apikey
+            - authorization
+            - content-type
+            - x-client-info
+          exposed_headers:
+            - content-range
+          credentials: true
+          max_age: 86400
+
+  - name: functions
+    url: http://edge-runtime:9000
+    routes:
+      - name: functions-route
+        paths:
+          - /functions/v1
+    plugins:
+      - name: cors
+        config:
+          origins:
+            - '*'
+          methods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+            - OPTIONS
+          headers:
+            - apikey
+            - authorization
+            - content-type
+            - x-client-info
+          credentials: true
+          max_age: 86400
+          
+  # O Dashboard deve ser a última rota para funcionar como "catch-all"
+  - name: dashboard
+    url: http://studio:3000
+    routes:
+      - name: dashboard-route
+        paths:
+          - /
